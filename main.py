@@ -1,10 +1,23 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pdf2image import convert_from_bytes
 from io import BytesIO
 
+
 app = FastAPI()
+
+origins = ["*"] 
+
+# 💡 2. Add the CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.post("/upload-pdf/")
