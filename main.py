@@ -1,10 +1,12 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pdf2image import convert_from_bytes
 from io import BytesIO
 
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.post("/upload-pdf/")
 async def upload_pdf(file: UploadFile = File(...)):
     if not file.filename.lower().endswith(".pdf"):
