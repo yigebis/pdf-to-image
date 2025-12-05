@@ -34,7 +34,13 @@ async def upload_pdf(file: UploadFile = File(...)):
     
     # Convert first page to PNG in memory
     buf = BytesIO()
-    pages[0].save(buf, format="PNG")
+    pages[0].save(
+        buf, 
+        format="PNG", 
+        headers={
+            "Content-Disposition": 'attachment; filename="flyer.png"'
+        }
+    )
     buf.seek(0)
     
     return StreamingResponse(buf, media_type="image/png")
